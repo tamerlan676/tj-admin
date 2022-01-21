@@ -1,0 +1,113 @@
+@font-face {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 400;
+    src: local(''),
+         url('/fonts/montserrat-regular.woff2') format('woff2'), 
+         url('/fonts/montserrat-regular.woff') format('woff'), 
+  }
+@font-face {
+    font-family: 'Montserrat-Medium';
+    font-style: normal;
+    font-weight: 500;
+    src: local(''),
+         url('/fonts/montserrat-500.woff2') format('woff2'), 
+         url('/fonts/montserrat-500.woff') format('woff'),
+  }
+  @font-face {
+    font-family: 'Montserrat-SemiBold';
+    font-style: normal;
+    font-weight: 600;
+    src: local(''),
+         url('/fonts/montserrat-600.woff2') format('woff2'), 
+         url('/fonts/montserrat-600.woff') format('woff'), 
+  }
+  @font-face {
+    font-family: 'Montserrat-Bold';
+    font-style: normal;
+    font-weight: 800;
+    src: local(''),
+         url('/fonts/montserrat-800.woff2') format('woff2'), 
+         url('/fonts/montserrat-800.woff') format('woff'), 
+  }
+
+  body{
+      font-family: 'Montserrat';
+  }
+
+  .breadcrumbs{
+    color: #D8DDE9;
+        a{
+        color: #D8DDE9;
+        }
+    }
+
+  button{
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  input{
+    font-family: inherit;
+  }
+
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+  }
+  
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #EE7A7A;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  input:checked + .slider {
+    background-color: #5DBA6C;
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px #5DBA6C;
+  }
+  
+  input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+  }
+  
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 34px;
+  }
+  
+  .slider.round:before {
+    border-radius: 50%;
+  }
