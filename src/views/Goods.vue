@@ -22,7 +22,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="item in searchedProducts.data" :key="item.id">
+                <tr v-for="item in goods.data" :key="item.id">
                     <td><img class="good-img" :src="item.img"></td>
                     <td>{{ item.name }}</td>
                     <td>Зимние мужские ботинки...</td>
@@ -46,25 +46,15 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import axios from 'axios'
 
 export default {
   setup () {
     axios.get('/data/goods.json').then(response => { goods.value = response.data })
     const goods = ref(null)
-    const searchQuery = ref('')
-    const searchedProducts = computed(() => {
-      return goods.value.filter((product) => {
-        return (
-          product.name === searchQuery.value
-        )
-      })
-    })
     return {
-      goods,
-      searchQuery,
-      searchedProducts
+      goods
     }
   }
 }
