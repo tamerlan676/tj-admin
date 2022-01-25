@@ -4,7 +4,7 @@
     </div>
     <h2>Товары</h2>
     <div class="search-line">
-        <input class="search" type="text" placeholder="Поиск по артиклу">
+        <input class="search" v-model="searchQuery" type="text" placeholder="Поиск по артиклу">
             <button class="filter"><img :src="require(`@/assets/icons/filter.svg`)">Фильтрация</button>
             <button class="addGood"><img :src="require(`@/assets/icons/plus.svg`)">Добавить товар</button>
     </div>
@@ -22,16 +22,16 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="item in 10" :key="item">
-                    <td><img :src="require(`@/assets/icons/img.png`)"></td>
-                    <td>GK 7522711 BLI</td>
+                <tr v-for="item in searchedProducts.data" :key="item.id">
+                    <td><img class="good-img" :src="item.img"></td>
+                    <td>{{ item.name }}</td>
                     <td>Зимние мужские ботинки...</td>
-                    <td>Ботинки</td>
-                    <td>23 000 р</td>
+                    <td>{{ item.prod_main_cat_name }}</td>
+                    <td>{{ item.priceNew }}</td>
                     <td class="actions">
-                        <img :src="require(`@/assets/icons/edit-t.svg`)">
-                        <img :src="require(`@/assets/icons/browse-t.svg`)">
-                        <img :src="require(`@/assets/icons/del-t.svg`)">
+                        <router-link :to="{ name: 'GoodItem', params: { id: item.id  }}"><img :src="require(`@/assets/icons/edit-t.svg`)"></router-link>
+                        <router-link :to="{ name: 'GoodItem', params: { id: item.id  }}"><img :src="require(`@/assets/icons/browse-t.svg`)"></router-link>
+                        <router-link :to="{ name: 'GoodItem', params: { id: item.id  }}"><img :src="require(`@/assets/icons/del-t.svg`)"></router-link>
                         </td>
                     <td>
                        <label class="switch">
@@ -46,20 +46,26 @@
 </template>
 
 <script>
+import { ref, computed } from 'vue'
+import axios from 'axios'
+
 export default {
-  name: 'myStore',
-  data () {
+  setup () {
+    axios.get('/data/goods.json').then(response => { goods.value = response.data })
+    const goods = ref(null)
+    const searchQuery = ref('')
+    const searchedProducts = computed(() => {
+      return goods.value.filter((product) => {
+        return (
+          product.name === searchQuery.value
+        )
+      })
+    })
     return {
-      msg: 'Welcome to my Vuex Store'
+      goods,
+      searchQuery,
+      searchedProducts
     }
-  },
-  computed: {
-    posts () {
-      return this.$store.state.posts
-    }
-  },
-  mounted () {
-    this.$store.dispatch('getPosts')
   }
 }
 </script>
@@ -121,11 +127,16 @@ export default {
         font-weight: 500;
         tr{
             background: #F6F7FA;
+            .good-img{
+                width: 60px;
+                height: 60px;
+                object-fit: contain;
+            }
         }
         td{
             border-bottom: 3px solid #fff;
         }
-        .actions img{
+        .actions a{
             margin-right: 16px;
             &:last-child{
                 margin-right: 0;

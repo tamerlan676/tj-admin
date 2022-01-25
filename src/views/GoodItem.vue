@@ -3,31 +3,31 @@
         <router-link to="/"> Главная</router-link> / <router-link to="/"> Товары</router-link> / Ботинки
     </div>
     <header>
-        <h2>Мужские зимние ботинки</h2>
+        <h2>{{ $route.params.id }}</h2>
         <button>Сохранить</button>
     </header>
     <section class="wrapper">
         <div class="fields">
             <div class="field">
-                <label for="">Название поля</label>
-                <input class="input" type="text" value="Значение поля">
+                <label for="">Артикул товара</label>
+                <input class="input" type="text" :value="goodItem.name">
             </div>
             <div class="field">
-                <label for="">Название поля</label>
-                <input class="input" type="text" value="Значение поля">
+                <label for="">Категория</label>
+                <div class="category-name">{{ goodItem.prod_main_cat_name }}</div>
             </div>
             <div class="field">
-                <label for="">Название поля</label>
-                <input class="input" type="text" value="Значение поля">
+                <label for="">Брэнд</label>
+                <input class="input" type="text" :value="goodItem.brand">
             </div>
             <div class="field-sm">
                 <div class="field">
-                    <label for="">Название поля</label>
-                    <input class="input" type="text" value="Значение поля">
+                    <label for="">Цена</label>
+                    <input class="input" type="text" :value="goodItem.priceNew">
                 </div>
                 <div class="field">
-                    <label for="">Название поля</label>
-                    <input class="input" type="text" value="Значение поля">
+                    <label for="">Старая цена</label>
+                    <input class="input" type="text" :value="goodItem.priceOld">
                 </div>
             </div>
             <div class="field-sm">
@@ -53,7 +53,7 @@
             </div>
             <div class="field">
                 <label for="">Описание товара</label>
-                <textarea value="Черные ботинки с модным квадратным носом станут удачным выбором для холодной погоды. Для создания модели на плоской шнуровке выбрали кожу с естественным тиснением. Эластичная стеганая вставка в области щиколотки снижает давление на нее, а шнуровка дарит комфортную посадку. "></textarea>
+                <textarea :value="goodItem.desc"></textarea>
             </div>
         </div>
         <div class="switches">
@@ -81,6 +81,23 @@
         </div>
     </section>
 </template>
+
+<script>
+import { ref } from 'vue'
+import { useRoute } from 'vue-router'
+import axios from 'axios'
+
+export default {
+  setup () {
+    const goodItem = ref()
+    const route = useRoute()
+    axios.get('/data/goods.json').then(response => { goodItem.value = response.data.data.filter(item => item.id === +route.params.id)[0] })
+    return {
+      goodItem
+    }
+  }
+}
+</script>
 
 <style lang="scss" scoped>
     header{
@@ -131,6 +148,13 @@
                 font-weight: 500;
                 font-size: 18px;
                 border-radius: 10px;
+            }
+            .category-name{
+                font-weight: 500;
+                background: #e5e5e5;
+                padding: 10px 15px;
+                border-radius: 5px;
+                width: fit-content;
             }
         }
         .field-sm{

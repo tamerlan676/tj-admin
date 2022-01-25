@@ -1,0 +1,88 @@
+{
+    "data": [
+        {
+            "id": 46235001,
+            "name": "VR 5218811 TPZ",
+            "product_group": "ЖЕНСКАЯ ОБУВЬ",
+            "product_subgroup": "ТУФЛИ ЖЕНСКИЕ",
+            "img": "https://s3.tjcollection.ru/catalog/VR%205218811%20TPZ/VR%205218811%20TPZ%201.jpg",
+            "priceNew": "9990",
+            "priceOld": "9990",
+            "brand": "TJ COLLECTION",
+            "season": "ДЕМИСЕЗОН",
+            "im_prodcreation_date": "2022-01-20T13:31:55",
+            "readiness_sign": "Y",
+            "is_show": "Y",
+            "prod_main_cat_id": 6,
+            "prod_main_cat_name": "Для неё-Обувь-Балетки",
+            "stock_rests": 13,
+            "desc": "Прозрачные колготки с легким компрессионным эффектом 20 ден Джакометти",
+            "colours": [
+                {
+                    "colour": "коричневый",
+                    "sort_order": 1
+                },
+                {
+                    "colour": "мульти",
+                    "sort_order": 2
+                }
+            ]
+        },
+        {
+            "id": 46235002,
+            "name": "VR 5218811 TPZ",
+            "product_group": "ЖЕНСКАЯ ОБУВЬ",
+            "product_subgroup": "ТУФЛИ ЖЕНСКИЕ",
+            "img": "https://s3.tjcollection.ru/catalog/VR%205218811%20TPZ/VR%205218811%20TPZ%201.jpg",
+            "priceNew": "9990",
+            "priceOld": "9990",
+            "brand": "TJ COLLECTION",
+            "season": "ДЕМИСЕЗОН",
+            "im_prodcreation_date": "2022-01-20T13:31:55",
+            "readiness_sign": "Y",
+            "is_show": "Y",
+            "prod_main_cat_id": 6,
+            "prod_main_cat_name": "Для неё-Обувь-Балетки",
+            "stock_rests": 13,
+            "desc": "Прозрачные колготки с легким компрессионным эффектом 20 ден Джакометти",
+            "colours": [
+                {
+                    "colour": "коричневый",
+                    "sort_order": 1
+                },
+                {
+                    "colour": "мульти",
+                    "sort_order": 2
+                }
+            ]
+        },
+        {
+            "id": 46235003,
+            "name": "VR 5218811 TPZ",
+            "product_group": "ЖЕНСКАЯ ОБУВЬ",
+            "product_subgroup": "ТУФЛИ ЖЕНСКИЕ",
+            "img": "https://s3.tjcollection.ru/catalog/VR%205218811%20TPZ/VR%205218811%20TPZ%201.jpg",
+            "priceNew": "9990",
+            "priceOld": "9990",
+            "brand": "TJ COLLECTION",
+            "season": "ДЕМИСЕЗОН",
+            "im_prodcreation_date": "2022-01-20T13:31:55",
+            "readiness_sign": "Y",
+            "is_show": "Y",
+            "prod_main_cat_id": 6,
+            "prod_main_cat_name": "Для неё-Обувь-Балетки",
+            "stock_rests": 13,
+            "desc": "Прозрачные колготки с легким компрессионным эффектом 20 ден Джакометти",
+            "colours": [
+                {
+                    "colour": "коричневый",
+                    "sort_order": 1
+                },
+                {
+                    "colour": "мульти",
+                    "sort_order": 2
+                }
+            ]
+        }
+    ]
+}
