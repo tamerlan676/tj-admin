@@ -4,7 +4,7 @@
     </div>
     <h2>Товары</h2>
     <div class="search-line">
-        <input class="search" v-model="searchQuery" type="text" placeholder="Поиск по артиклу">
+        <input class="search" type="text" placeholder="Поиск по артиклу" v-model="searchQuery">
             <button class="filter"><img :src="require(`@/assets/icons/filter.svg`)">Фильтрация</button>
             <button class="addGood"><img :src="require(`@/assets/icons/plus.svg`)">Добавить товар</button>
     </div>
@@ -22,7 +22,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="item in searchedProducts.data" :key="item.id">
+                <tr v-for="item in searchResults" :key="item.id">
                     <td><img class="good-img" :src="item.img"></td>
                     <td>{{ item.name }}</td>
                     <td>Зимние мужские ботинки...</td>
@@ -51,20 +51,16 @@ import axios from 'axios'
 
 export default {
   setup () {
-    axios.get('/data/goods.json').then(response => { goods.value = response.data })
     const goods = ref(null)
+    axios.get('http://192.168.200.32:81/admin/api/v1/get_goods').then(response => { goods.value = response.data })
     const searchQuery = ref('')
-    const searchedProducts = computed(() => {
-      return goods.value.filter((product) => {
-        return (
-          product.name === searchQuery.value
-        )
-      })
+    const searchResults = computed(() => {
+      return goods.value.filter((product) => product.name.toLowerCase().indexOf(searchQuery.value.toLowerCase()) !== -1)
     })
     return {
       goods,
       searchQuery,
-      searchedProducts
+      searchResults
     }
   }
 }
@@ -121,6 +117,7 @@ export default {
     }
     td{
         padding: 16px;
+        max-width: 80px;
     }
     tbody{
         color: #6A7797;

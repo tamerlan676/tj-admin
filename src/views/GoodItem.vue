@@ -30,28 +30,13 @@
                     <input class="input" type="text" :value="goodItem.priceOld">
                 </div>
             </div>
-            <div class="field-sm">
-                <div class="field">
-                    <label for="">Название поля</label>
-                    <input class="input" type="text" value="Значение поля">
-                </div>
-                <div class="field">
-                    <label for="">Название поля</label>
-                    <input class="input" type="text" value="Значение поля">
-                </div>
-            </div>
             <div class="field">
                 <label for="">Фото Товара</label>
                 <div class="images">
-                    <div class="img"><img :src="require(`@/assets/icons/foto.png`)"></div>
-                    <div class="img"><img :src="require(`@/assets/icons/foto.png`)"></div>
-                    <div class="img"><img :src="require(`@/assets/icons/foto.png`)"></div>
-                    <div class="img"><img :src="require(`@/assets/icons/foto.png`)"></div>
-                    <div class="img"><img :src="require(`@/assets/icons/foto.png`)"></div>
-                    <div class="img"><img :src="require(`@/assets/icons/foto.png`)"></div>
+                    <div class="img"><img :src="goodItem.img"></div>
                 </div>
             </div>
-            <div class="field">
+            <div v-if="goodItem.desc" class="field">
                 <label for="">Описание товара</label>
                 <textarea :value="goodItem.desc"></textarea>
             </div>
@@ -89,9 +74,9 @@ import axios from 'axios'
 
 export default {
   setup () {
-    const goodItem = ref()
     const route = useRoute()
-    axios.get('/data/goods.json').then(response => { goodItem.value = response.data.data.filter(item => item.id === +route.params.id)[0] })
+    axios.get('http://192.168.200.32:81/admin/api/v1/get_goods').then(response => { goodItem.value = response.data.filter(item => item.id === +route.params.id)[0] })
+    const goodItem = ref(null)
     return {
       goodItem
     }
@@ -172,6 +157,9 @@ export default {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             grid-gap: 10px;
+            img{
+                max-width: 200px;
+            }
         }
         }
         .switches{
