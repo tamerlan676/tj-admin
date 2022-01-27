@@ -6,65 +6,68 @@
         <h2>{{ $route.params.id }}</h2>
         <button>Сохранить</button>
     </header>
-    <section class="wrapper">
-        <div class="fields">
-            <div class="field">
-                <label for="">Артикул товара</label>
-                <input class="input" type="text" :value="goodItem.name">
-            </div>
-            <div class="field">
-                <label for="">Категория</label>
-                <div class="category-name">{{ goodItem.prod_main_cat_name }}</div>
-            </div>
-            <div class="field">
-                <label for="">Брэнд</label>
-                <input class="input" type="text" :value="goodItem.brand">
-            </div>
-            <div class="field-sm">
+    <form @submit.prevent="sendData">
+        <section class="wrapper">
+            <div class="fields">
                 <div class="field">
-                    <label for="">Цена</label>
-                    <input class="input" type="text" :value="goodItem.priceNew">
+                    <label for="">Артикул товара</label>
+                    <input class="input" v-model="goodItem.name" type="text">
                 </div>
                 <div class="field">
-                    <label for="">Старая цена</label>
-                    <input class="input" type="text" :value="goodItem.priceOld">
+                    <label for="">Категория</label>
+                    <div class="category-name">{{ goodItem.prod_main_cat_name }}</div>
+                </div>
+                <div class="field">
+                    <label for="">Брэнд</label>
+                    <input class="input" type="text" :value="goodItem.brand">
+                </div>
+                <div class="field-sm">
+                    <div class="field">
+                        <label for="">Цена</label>
+                        <input class="input" type="text" :value="goodItem.priceNew">
+                    </div>
+                    <div class="field">
+                        <label for="">Старая цена</label>
+                        <input class="input" type="text" :value="goodItem.priceOld">
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="">Фото Товара</label>
+                    <div class="images">
+                        <div class="img"><img :src="goodItem.img"></div>
+                    </div>
+                </div>
+                <div v-if="goodItem.desc" class="field">
+                    <label for="">Описание товара</label>
+                    <textarea :value="goodItem.desc"></textarea>
                 </div>
             </div>
-            <div class="field">
-                <label for="">Фото Товара</label>
-                <div class="images">
-                    <div class="img"><img :src="goodItem.img"></div>
+            <div class="switches">
+                <div class="switch-item">
+                    <div class="title">Выключить</div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="switch-item">
+                    <div class="title">Выключить</div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="switch-item">
+                    <div class="title">Выключить</div>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
                 </div>
             </div>
-            <div v-if="goodItem.desc" class="field">
-                <label for="">Описание товара</label>
-                <textarea :value="goodItem.desc"></textarea>
-            </div>
-        </div>
-        <div class="switches">
-            <div class="switch-item">
-                <div class="title">Выключить</div>
-                <label class="switch">
-                    <input type="checkbox" checked>
-                    <span class="slider round"></span>
-                </label>
-            </div>
-            <div class="switch-item">
-                <div class="title">Выключить</div>
-                <label class="switch">
-                    <input type="checkbox" checked>
-                    <span class="slider round"></span>
-                </label>
-            </div>
-            <div class="switch-item">
-                <div class="title">Выключить</div>
-                <label class="switch">
-                    <input type="checkbox">
-                    <span class="slider round"></span>
-                </label>
-            </div>
-        </div>
-    </section>
+            <button type="sudmit">Send</button>
+        </section>
+    </form>
 </template>
 
 <script>
@@ -76,9 +79,14 @@ export default {
   setup () {
     const route = useRoute()
     axios.get('http://192.168.200.32:81/admin/api/v1/get_goods').then(response => { goodItem.value = response.data.filter(item => item.id === +route.params.id)[0] })
+    function sendData () {
+      axios.post('http://localhost:3000/data',
+        { article: goodItem.value.name, desc: 'TestDesc' }).then(response => {})
+    }
     const goodItem = ref(null)
     return {
-      goodItem
+      goodItem,
+      sendData
     }
   }
 }
