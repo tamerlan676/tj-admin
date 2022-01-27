@@ -21,15 +21,15 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/MainAdmin.vue')
   },
   {
-    path: '/goods',
-    name: 'Goods',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Goods.vue')
+    path: '/products',
+    name: 'Products',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Products.vue')
   },
   {
-    path: '/good/:id',
-    name: 'GoodItem',
+    path: '/product/:id',
+    name: 'Product',
     props: true,
-    component: () => import(/* webpackChunkName: "about" */ '../views/GoodItem.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/Product.vue')
   },
   {
     path: '/categories',

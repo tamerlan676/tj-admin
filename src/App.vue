@@ -5,7 +5,7 @@
       <div class="nav">
         <router-link class="link" :isActive="active" to="/"><img :src="require(`@/assets/icons/home-link.svg`)" alt="">Главная</router-link>
         <router-link class="link" :isActive="active" to="/categories"><img :src="require(`@/assets/icons/cat-link.svg`)" alt="">Категории</router-link>
-        <router-link class="link" :isActive="active" to="/goods"><img :src="require(`@/assets/icons/goods-link.svg`)" alt="">Товары</router-link>
+        <router-link class="link" :isActive="active" to="/products"><img :src="require(`@/assets/icons/goods-link.svg`)" alt="">Товары</router-link>
         <router-link class="link" :isActive="active" to="/orders"><img :src="require(`@/assets/icons/orders-link.svg`)" alt="">Заказы</router-link>
         <router-link class="link" :isActive="active" to="/pages"><img :src="require(`@/assets/icons/pages-link.svg`)" alt="">Страницы</router-link>
         <router-link class="link" :isActive="active" to="/users"><img :src="require(`@/assets/icons/users-link.svg`)" alt="">Пользователи</router-link>

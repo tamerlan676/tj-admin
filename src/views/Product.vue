@@ -10,35 +10,35 @@
         <div class="fields">
             <div class="field">
                 <label for="">Артикул товара</label>
-                <input class="input" type="text" :value="goodItem.name">
+                <input class="input" type="text" :value="product.name">
             </div>
             <div class="field">
                 <label for="">Категория</label>
-                <div class="category-name">{{ goodItem.prod_main_cat_name }}</div>
+                <div class="category-name">{{ product.prod_main_cat_name }}</div>
             </div>
             <div class="field">
                 <label for="">Брэнд</label>
-                <input class="input" type="text" :value="goodItem.brand">
+                <input class="input" type="text" :value="product.brand">
             </div>
             <div class="field-sm">
                 <div class="field">
                     <label for="">Цена</label>
-                    <input class="input" type="text" :value="goodItem.priceNew">
+                    <input class="input" type="text" :value="product.priceNew">
                 </div>
                 <div class="field">
                     <label for="">Старая цена</label>
-                    <input class="input" type="text" :value="goodItem.priceOld">
+                    <input class="input" type="text" :value="product.priceOld">
                 </div>
             </div>
             <div class="field">
                 <label for="">Фото Товара</label>
                 <div class="images">
-                    <div class="img"><img :src="goodItem.img"></div>
+                    <div class="img"><img :src="product.img"></div>
                 </div>
             </div>
-            <div v-if="goodItem.desc" class="field">
+            <div v-if="product.desc" class="field">
                 <label for="">Описание товара</label>
-                <textarea :value="goodItem.desc"></textarea>
+                <textarea :value="product.desc"></textarea>
             </div>
         </div>
         <div class="switches">
@@ -75,10 +75,10 @@ import axios from 'axios'
 export default {
   setup () {
     const route = useRoute()
-    axios.get('http://192.168.200.32:81/admin/api/v1/get_goods').then(response => { goodItem.value = response.data.filter(item => item.id === +route.params.id)[0] })
-    const goodItem = ref(null)
+    axios.get('http://192.168.200.32:81/admin/api/v1/get_goods').then(response => { product.value = response.data.filter(item => item.id === +route.params.id)[0] })
+    const product = ref(null)
     return {
-      goodItem
+      product
     }
   }
 }
