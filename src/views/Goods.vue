@@ -25,9 +25,9 @@
                 <tr v-for="item in searchResults" :key="item.id">
                     <td><img class="good-img" :src="item.img"></td>
                     <td>{{ item.name }}</td>
-                    <td>Зимние мужские ботинки...</td>
+                    <td>{{ item.product_subgroup }}</td>
                     <td>{{ item.prod_main_cat_name }}</td>
-                    <td>{{ item.priceNew }}</td>
+                    <td>{{ item.priceNew }} ₽</td>
                     <td class="actions">
                         <router-link :to="{ name: 'GoodItem', params: { id: item.id  }}"><img :src="require(`@/assets/icons/edit-t.svg`)"></router-link>
                         <router-link :to="{ name: 'GoodItem', params: { id: item.id  }}"><img :src="require(`@/assets/icons/browse-t.svg`)"></router-link>
@@ -51,8 +51,8 @@ import axios from 'axios'
 
 export default {
   setup () {
+    axios.get('../data/goods.json').then(response => { goods.value = response.data.data })
     const goods = ref(null)
-    axios.get('http://192.168.200.32:81/admin/api/v1/get_goods').then(response => { goods.value = response.data })
     const searchQuery = ref('')
     const searchResults = computed(() => {
       return goods.value.filter((product) => product.name.toLowerCase().indexOf(searchQuery.value.toLowerCase()) !== -1)
