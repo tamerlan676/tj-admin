@@ -8,6 +8,7 @@
         <input class="input" type="text" placeholder="Поиск по имени" v-model="nameQuery">
         <input class="input" type="text" placeholder="Поиск по телефону" v-model="phoneQuery">
         <input class="input" type="text" placeholder="Поиск по email" v-model="emailQuery">
+        <div class="cr-button"><router-link class="cr-btn" to="/order">Создать заказ</router-link></div>
             <!-- <button class="filter"><img :src="require(`@/assets/icons/filter.svg`)">Фильтрация</button>
             <button class="addGood"><img :src="require(`@/assets/icons/plus.svg`)">Добавить товар</button> -->
     </div>
@@ -77,7 +78,7 @@ export default {
 <style lang="scss" scoped>
 .search-line{
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     margin-bottom: 40px;
     .input{
         border: 2px solid #6A7797;
@@ -87,19 +88,17 @@ export default {
         padding-left: 8px;
         height: 42px;
     }
-    button{
-        display: block;
-        color: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: none;
-        padding: 10px 24px;
-        border-radius: 50px;
-        cursor: pointer;
-        font-family: inherit;
-        img{
-            margin-right: 8px;
+    .cr-button{
+        .cr-btn{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            border-radius: 30px;
+            color: #fff;
+            text-decoration: none;
+            background: #5DBA6C;
+            text-transform: uppercase;
         }
     }
     .filter{
