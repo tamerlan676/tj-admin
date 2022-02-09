@@ -77,7 +77,7 @@ import axios from 'axios'
 export default {
   setup () {
     const route = useRoute()
-    axios.get('../data/goods.json').then(response => { goodItem.value = response.data.data.filter(item => item.id === +route.params.id)[0] })
+    axios.get('http://192.168.200.32:81/admin/api/v1/get_goods').then(response => { goodItem.value = response.data.filter(item => item.id === +route.params.id)[0] })
     // function sendData () {
     //   axios.post('http://localhost:3000/data',
     //     { article: goodItem.value.name, desc: 'TestDesc' }).then(response => {})

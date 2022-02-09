@@ -22,7 +22,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="item in searchResults" :key="item.id">
+                <tr v-for="item in currentPage" :key="item.id">
                     <td><img class="good-img" :src="item.img"></td>
                     <td>{{ item.name }}</td>
                     <td>{{ item.product_subgroup }}</td>
@@ -43,23 +43,48 @@
             </tbody>
 </table>
     </div>
+    <div class="pagination">
+        <div class="page" :class="{'active' : page == pageNumber}"  v-for="page in pages" :key="page" @click="testFoo(page)">{{ page }}</div>
+    </div>
 </template>
-
 <script>
 import { ref, computed } from 'vue'
 import axios from 'axios'
 
 export default {
   setup () {
-    axios.get('../data/goods.json').then(response => { goods.value = response.data.data })
+    axios.get('http://192.168.200.32:81/admin/api/v1/get_goods').then(response => { goods.value = response.data })
     const goods = ref(null)
     const searchQuery = ref('')
     const searchResults = computed(() => {
       return goods.value.filter((product) => product.name.toLowerCase().indexOf(searchQuery.value.toLowerCase()) !== -1)
     })
+    const goodsPerPage = ref(30)
+    const pageNumber = ref(1)
+    const pages = computed(() => {
+      return Math.ceil(searchResults.value.length / 30)
+    })
+    const currentPage = computed(() => {
+      const from = (pageNumber.value - 1) * goodsPerPage.value
+      const to = from + goodsPerPage.value
+      return searchResults.value.slice(from, to)
+    })
+    const pageCLick = (page) => {
+      return page
+    }
+    const testFoo = (page) => {
+      pageNumber.value = page
+      return pageNumber
+    }
     return {
       goods,
       searchQuery,
+      goodsPerPage,
+      pages,
+      testFoo,
+      pageCLick,
+      pageNumber,
+      currentPage,
       searchResults
     }
   }
@@ -103,6 +128,7 @@ export default {
     }
 }
 .table{
+    margin-bottom: 24px;
     table{
         width: 100%;
         border-spacing: 0;
@@ -138,6 +164,30 @@ export default {
             &:last-child{
                 margin-right: 0;
             }
+        }
+    }
+}
+.pagination{
+    display: flex;
+    flex-wrap: wrap;
+    .page{
+        padding: 5px;
+        border: 1px solid #DFDFE2;
+        width: 20px;
+        text-align: center;
+        margin-right: 5px;
+        font-size: 14px;
+        color: #6A7797;
+        margin-bottom: 5px;
+        &:last-child{
+            margin-right: 0;
+        }
+        &:hover{
+            background: #F2F5FF;
+            cursor:pointer
+        }
+        &.active{
+            background: #F2F5FF;
         }
     }
 }
