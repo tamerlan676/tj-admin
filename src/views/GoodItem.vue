@@ -1,6 +1,6 @@
 <template>
   <div class="breadcrumbs">
-    <router-link to="/"> Главная</router-link> / <router-link to="/"> Товары</router-link> / {{ goodItem.id }}
+    <router-link to="/"> Главная</router-link> / <router-link to="/"> Товары</router-link> / {{ goodItem.product_id }}
   </div>
   <header>
     <h2>{{ goodItem.product_class }}</h2>
@@ -9,93 +9,18 @@
   <form>
     <section class="wrapper">
       <div class="fields">
-        <div class="field">
-          <label for="">Артикул товара</label>
-          <div class="category-name">{{ goodItem.name }}</div>
-        </div>
-        <div class="field">
-          <label for="">Категория</label>
-          <div v-if="goodItem.main_cat_4_product" class="category-name">{{ goodItem.main_cat_4_product }}</div>
-          <div v-if="goodItem.main_cat_4_product" @click="resetCategories" class="change-categories"><img src="@/assets/icons/pen-solid.svg">Изменить категории</div>
-          <div v-if="mainCategory" class="cat-1 category-name">{{ mainCategory }} <span @click="clearMainCat" class="del-cat">x</span></div>
-          <div v-if="subCategory" class="cat-2 category-name">  {{ subCategory }} <span @click="clearSubCat" class="del-cat">x</span></div>
-          <div v-if="lastCategory" class="cat-3 category-name">    {{ lastCategory }} <span @click="clearLastCat" class="del-cat">x</span></div>
-          <div v-if="!goodItem.main_cat_4_product" class="categories-wrapper">
-            <div class="categories" v-for="(item, id) in categoryList" :key="id">
-              <div class="step-1">
-                  <input :id="id" type="radio" :value="item.category_caption"  v-model="mainCategory"/>
-                  <label class="small l1" :for="id">{{ item.category_caption }}</label>
-              </div>
-              <div class="step-2" style="padding-left: 20px" v-for="(item2, id) in item.children" :key="id+=1">
-                  <div class="step-2-wrapper">
-                  <input type="radio" :id="item2.category_caption"  :value="item2.category_caption"  v-model="subCategory">
-                  <label class="small" :for="item2.category_caption" >{{ item2.category_caption }}</label>
-                  </div>
-                  <div class="step-3" style="padding-left: 20px" v-for="(item3, id) in item2.children" :key="id+=1">
-                    <input  type="radio" :id="item3.category_caption" :value="item3.category_caption"  v-model="lastCategory">
-                    <label :for="item3.category_caption" class="small">{{ item3.category_caption }}</label>
-                  </div>
-              </div>
-              </div>
-          </div>
-            </div>
-        <div class="field">
-          <label for="">Брэнд</label>
-          <div v-if="goodItem.brand" class="category-name">{{ goodItem.brand }}</div>
-          <div v-if="goodItem.brand" @click="resetBrand" class="change-categories"><img src="@/assets/icons/pen-solid.svg">Изменить бренд</div>
-          <select v-if="!goodItem.brand">
-            <option v-for="(item, key) in brandList" :key="key" value="">{{ item.brand }}</option>
-          </select>
-        </div>
-        <div class="field">
-            <label for="">Цвета</label>
-            <div v-for="color in goodItem.colours" :key="color" class="category-name">{{ color.colour }}</div>
-            <div v-if="goodItem.colours" @click="resetColors" class="change-categories"><img src="@/assets/icons/pen-solid.svg">Изменить цвета</div>
-            <div v-if="!goodItem.colours">
-            <div class="category-name" v-for="(newcolor, id) in newColors" :key="id">{{ newcolor }} <span @click="deleteCurrentColor(id)" class="del-cat">x</span></div>
-            <div class="color-wrapper" v-for="(colorItem, id) in colorList" :key="id">
-              <input type="radio" :id="colorItem.colour" v-on:input="addNewColor(colorItem.colour)"  :value="colorItem.colour">
-              <label class="small" :for="colorItem.colour">{{ colorItem.colour }}</label>
-            </div>
-            </div>
-        </div>
-        <div class="field">
-          <label for="">Дата создания</label>
-          <input readonly class="input" type="text" :value="goodItem.creation_date">
-        </div>
-        <div class="field-sm">
-          <div class="field">
-            <label for="">Цена</label>
-            <input class="input" type="text" :value="goodItem.cur_price">
-          </div>
-          <div class="field" v-if="goodItem.max_price">
-            <label for="">Старая цена</label>
-            <input class="input" type="text"  :value="goodItem.max_price">
-          </div>
-        </div>
-        <div class="field-sm" v-if="goodItem.sale_pct">
-          <div class="field">
-            <label for="">Размер скидки</label>
-            <input class="input" type="text"  :value="goodItem.sale_pct">
-          </div>
-        </div>
-        <div class="field-sm">
-          <div class="field">
-            <label for="">Сезон</label>
-            <input class="input" type="text"  :value="goodItem.season">
-          </div>
-        </div>
-        <div class="field">
-          <label for="">Фото Товара</label>
-          <div class="images">
-            <div class="img"><img :src="goodItem.img"></div>
-          </div>
-        </div>
-        <div v-if="goodItem.desc" class="field">
-          <label for="">Описание товара</label>
-          <textarea :value="goodItem.desc"></textarea>
-        </div>
-        <div class="field-sm">
+        <Article :product_name="goodItem.product_name"/>
+        <Categories :categories="goodItem.product_categories" :category_list="categoryList" @reset="resetCategories" @setnew="setNewCategories" />
+        <Brands :brand="goodItem.product_brand" :brand_list="brandList" />
+        <Sizes :sizes="goodItem.sizes" />
+        <Colors :colors="goodItem.colours" />
+        <CreationDate :date="goodItem.creation_date" />
+        <Prices :cur_price="goodItem.cur_price" :max_price="goodItem.max_price" />
+        <Sale :sale="goodItem.sale_pct"/>
+        <Seasons :season="goodItem.season"/>
+        <Images :images="goodItem.images_files"/>
+        <Description :description="goodItem.product_descr" />
+        <div v-if="goodItem.stock_rest" class="field-sm">
           <div class="field">
             <label for="">Остаток на складе</label>
             <input class="input"  type="text"  :value="goodItem.stock_rest">
@@ -110,31 +35,32 @@
             <span class="slider round"></span>
           </label>
         </div>
-        <div class="switch-item">
-          <div class="title">Выключить</div>
-          <label class="switch">
-            <input type="checkbox" checked>
-            <span class="slider round"></span>
-          </label>
-        </div>
-        <div class="switch-item">
-          <div class="title">Выключить</div>
-          <label class="switch">
-            <input type="checkbox">
-            <span class="slider round"></span>
-          </label>
-        </div>
       </div>
     </section>
   </form>
+      <div class="popup">
+      <h1>I am popup</h1>
+    </div>
 </template>
 
 <script>
-import { ref, watch, computed } from 'vue'
+import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
+import Categories from '../components/details/Categories.vue'
+import Article from '../components/details/Article.vue'
+import Brands from '../components/details/Brands.vue'
+import Sizes from '../components/details/Sizes.vue'
+import Colors from '../components/details/Colors.vue'
+import CreationDate from '../components/details/CreationDate.vue'
+import Prices from '../components/details/Prices.vue'
+import Sale from '../components/details/Sale.vue'
+import Seasons from '../components/details/Seasons.vue'
+import Images from '../components/details/Images.vue'
+import Description from '../components/details/Description.vue'
 
 export default {
+  components: { Categories, Article, Brands, Sizes, Colors, CreationDate, Prices, Sale, Seasons, Images, Description },
   props: {
     id: {
       type: Number
@@ -145,14 +71,19 @@ export default {
   },
   setup () {
     const route = useRoute()
-    const goodItem = ref({})
+    const goodItem = ref(null)
     const pageNumber = ref(route.params.page)
-    const mainCategory = ref('')
-    const subCategory = ref('')
-    const lastCategory = ref('')
+    const firstLevelCat = ref(null)
+    const newCategories = ref(null)
+    const secondLevelCat = ref('')
+    const thirdLevelCat = ref('')
     const newColors = ref([])
     function resetCategories () {
-      goodItem.value.main_cat_4_product = ''
+      goodItem.value.product_categories = null
+      console.log('Сброс категорий')
+    }
+    function setNewCategories (val) {
+      console.log(val)
     }
     function addNewColor (color) {
       this.newColors.push(color)
@@ -163,49 +94,39 @@ export default {
     function resetColors () {
       goodItem.value.colours = null
     }
-    function clearMainCat () {
-      mainCategory.value = null
-    }
-    function clearSubCat () {
-      subCategory.value = null
-    }
-    function clearLastCat () {
-      lastCategory.value = null
-    }
     function deleteCurrentColor (id) {
       this.newColors.splice(id, 1)
-      console.log(id)
     }
-    const createdCategories = computed(() => `${mainCategory.value}` + `-${subCategory.value}` + `-${lastCategory.value}`)
+    // const createdCategories = computed(() => `${mainCategory.value}` + `-${subCategory.value}` + `-${lastCategory.value}`)
+    axios.get(`http://192.168.200.32:81/admin/api/v1/products/get/id/${+route.params.id}`).then(response => { goodItem.value = response.data.filter(item => item.product_id === +route.params.id)[0] })
     axios.get('http://192.168.200.32:81/api/gds/category').then(response => { categoryList.value = response.data })
     const categoryList = ref(null)
     axios.get('http://192.168.200.32:81/admin/api/v1/products/get/brands').then(response => { brandList.value = response.data })
     const brandList = ref(null)
+    axios.get('http://192.168.200.32:81/admin/api/v1/products/get/sizes').then(response => { sizeList.value = response.data })
+    const sizeList = ref(null)
     axios.get('http://192.168.200.32:81/admin/api/v1/products/get/colors').then(response => { colorList.value = response.data })
     const colorList = ref('')
-    axios.get(`http://192.168.200.32:81/admin/api/v1/products/get/page/${pageNumber.value}`).then(response => { goodItem.value = response.data.goods.filter(item => item.id === +route.params.id)[0] })
     // function sendData () {
     //   axios.post('http://localhost:3000/data',
     //     { article: goodItem.value.name, desc: 'TestDesc' }).then(response => {})
     // }
     watch(goodItem, (currentValue, oldValue) => {
-      console.log(currentValue)
     })
     return {
       goodItem,
-      clearMainCat,
       deleteCurrentColor,
-      clearSubCat,
-      clearLastCat,
       resetCategories,
+      newCategories,
+      setNewCategories,
       addNewColor,
       colorList,
       categoryList,
+      sizeList,
       brandList,
-      mainCategory,
-      subCategory,
-      lastCategory,
-      createdCategories,
+      firstLevelCat,
+      secondLevelCat,
+      thirdLevelCat,
       newColors,
       resetBrand,
       resetColors,
@@ -215,7 +136,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 header{
   display: flex;
   justify-content: space-between;
@@ -246,7 +167,7 @@ header{
         color: #6A7797;
         font-size: 20px;
       }
-      .step-1{
+      .step-1 {
         display: flex;
       }
       .step-2-wrapper{
@@ -354,6 +275,20 @@ header{
         font-size: 20px;
       }
     }
+  }
+}
+.popup{
+  width: 500px;
+  padding: 20px;
+  background: #e5e5e5;
+  position: absolute;
+  top: -20%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  transition: .5s all;
+  &.active{
+    top: 40%
   }
 }
 </style>

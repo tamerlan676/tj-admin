@@ -32,7 +32,7 @@ const routes = [
     }
   },
   {
-    path: '/good/:id/:page',
+    path: '/good/:id',
     name: 'GoodItem',
     props: true,
     component: () => import(/* webpackChunkName: "about" */ '../views/GoodItem.vue'),

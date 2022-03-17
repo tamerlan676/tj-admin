@@ -24,7 +24,7 @@
       <tbody>
       <tr v-for="item in goods" :key="item.id">
         <td><img class="good-img" :src="item.img"></td>
-        <td><router-link :to="{ name: 'GoodItem', params: { id: item.id, page: pageNumber  }}">{{ item.name }}</router-link></td>
+        <td><router-link :to="{ name: 'GoodItem', params: { id: item.id }}">{{ item.name }}</router-link></td>
         <td>{{ item.product_class }}</td>
         <td>{{ item.cur_price }} ₽</td>
         <td class="actions">{{ item.stock_rest }} шт.</td>
