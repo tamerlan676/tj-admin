@@ -10,9 +10,9 @@
     <section class="wrapper">
       <div class="fields">
         <Article :product_name="goodItem.product_name"/>
-        <Categories :categories="goodItem.product_categories" :category_list="categoryList" @reset="resetCategories" @setnew="setNewCategories" />
-        <Brands :brand="goodItem.product_brand" :brand_list="brandList" />
-        <Sizes :sizes="goodItem.sizes" />
+        <Categories :categories="goodItem.product_categories" :category_list="categoryList" @reset="resetCategories" @setNew="setNewCategory" :newCategory="newCategory" />
+        <Brands :brand="goodItem.product_brand" :brand_list="brandList" @resetBrand="resetBrand" />
+        <Sizes :sizes="goodItem.sizes" :sizeList="sizeList" @resetSizes="resetSizes" />
         <Colors :colors="goodItem.colours" />
         <CreationDate :date="goodItem.creation_date" />
         <Prices :cur_price="goodItem.cur_price" :max_price="goodItem.max_price" />
@@ -73,23 +73,23 @@ export default {
     const route = useRoute()
     const goodItem = ref(null)
     const pageNumber = ref(route.params.page)
-    const firstLevelCat = ref(null)
-    const newCategories = ref(null)
-    const secondLevelCat = ref('')
-    const thirdLevelCat = ref('')
     const newColors = ref([])
+    const newCategory = ref([])
     function resetCategories () {
       goodItem.value.product_categories = null
       console.log('Сброс категорий')
     }
-    function setNewCategories (val) {
-      console.log(val)
+    function setNewCategory (val) {
+      newCategory.value = val
     }
     function addNewColor (color) {
       this.newColors.push(color)
     }
     function resetBrand () {
-      goodItem.value.brand = ''
+      goodItem.value.product_brand = null
+    }
+    function resetSizes () {
+      goodItem.value.sizes = null
     }
     function resetColors () {
       goodItem.value.colours = null
@@ -116,20 +116,18 @@ export default {
     return {
       goodItem,
       deleteCurrentColor,
+      newCategory,
+      setNewCategory,
       resetCategories,
-      newCategories,
-      setNewCategories,
       addNewColor,
       colorList,
       categoryList,
       sizeList,
       brandList,
-      firstLevelCat,
-      secondLevelCat,
-      thirdLevelCat,
       newColors,
       resetBrand,
       resetColors,
+      resetSizes,
       pageNumber
     }
   }
@@ -167,22 +165,6 @@ header{
         color: #6A7797;
         font-size: 20px;
       }
-      .step-1 {
-        display: flex;
-      }
-      .step-2-wrapper{
-        display: flex;
-      }
-      .step-3{
-        display: flex;
-      }
-      .small{
-        font-size: 16px;
-        cursor: pointer;
-        &.l1{
-          font-weight: bold;
-        }
-      }
       .color-wrapper{
         display: flex;
       }
@@ -214,34 +196,6 @@ header{
         padding: 0 5px;
         cursor: pointer;
         border-radius: 10px;
-      }
-      .category-name{
-        font-weight: 500;
-        background: #e5e5e5;
-        padding: 10px 15px;
-        border-radius: 5px;
-        width: fit-content;
-        margin-bottom: 8px;
-      }
-      .cat-2{
-        margin-left: 20px;
-      }
-      .cat-3{
-        margin-left: 40px;
-      }
-      .del-cat{
-        color: red;
-        font-weight: 500;
-        cursor: pointer;
-      }
-      .change-categories{
-        display: flex;
-        align-items: center;
-        margin-bottom: 24px;
-        cursor: pointer;
-        img{
-          margin-right: 5px;
-        }
       }
     }
     .field-sm{
