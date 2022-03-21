@@ -1,8 +1,8 @@
 <template>
-<div class="description">
-    <div v-if="description" class="field">
-      <label for="">Описание товара</label>
-      <textarea :value="description"></textarea>
+<div class="model-description">
+    <div v-if="modelDescription" class="field">
+      <label for="">Описание модели</label>
+      <textarea :value="modelDescription"></textarea>
     </div>
 </div>
 </template>
@@ -10,13 +10,14 @@
 <script>
 export default {
   props: {
-    description: String
+    modelDescription: String
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  .description{
+  .model-description{
+    margin-bottom: 24px;
     label{
         display: block;
         font-weight: 500;
@@ -27,7 +28,7 @@ export default {
       textarea{
         font-family: inherit;
         width: 100%;
-        height: 170px;
+        height: 100px;
         padding: 16px;
         font-weight: 500;
         font-size: 18px;

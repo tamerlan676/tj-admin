@@ -11,15 +11,18 @@
       <div class="fields">
         <Article :product_name="goodItem.product_name"/>
         <Categories :categories="goodItem.product_categories" :category_list="categoryList" @reset="resetCategories" @setNew="setNewCategory" :newCategory="newCategory" />
-        <Brands :brand="goodItem.product_brand" :brand_list="brandList" @resetBrand="resetBrand" />
-        <Sizes :sizes="goodItem.sizes" :sizeList="sizeList" @resetSizes="resetSizes" />
-        <Colors :colors="goodItem.colours" />
+        <Brands :brand="goodItem.product_brand" :brand_list="brandList" @resetBrand="resetBrand" @setNewBrand="setNewBrand" :new_brand="newBrand" />
+        <Sizes :sizes="goodItem.sizes" :sizeList="sizeList" @resetSizes="resetSizes" @setNewSizes="setNewSizes" :newSizes="newSizes" @delNewSize="delNewSize" />
+        <Colors :colors="goodItem.colours" :color_list="colorList" :newColors="newColors" @resetColors="resetColors" @setNewColors="setNewColors" @delNewColor="delNewColor"/>
+        <Material :material="goodItem.material" />
         <CreationDate :date="goodItem.creation_date" />
         <Prices :cur_price="goodItem.cur_price" :max_price="goodItem.max_price" />
         <Sale :sale="goodItem.sale_pct"/>
         <Seasons :season="goodItem.season"/>
         <Images :images="goodItem.images_files"/>
         <Description :description="goodItem.product_descr" />
+        <ModelDescription :modelDescription="goodItem.model_descr" />
+        <Care :care="goodItem.care" />
         <div v-if="goodItem.stock_rest" class="field-sm">
           <div class="field">
             <label for="">Остаток на складе</label>
@@ -29,7 +32,7 @@
       </div>
       <div class="switches">
         <div class="switch-item">
-          <div class="title">Выключить</div>
+          <div class="title">Готов к публикации в ИМ</div>
           <label class="switch">
             <input type="checkbox" checked>
             <span class="slider round"></span>
@@ -38,9 +41,6 @@
       </div>
     </section>
   </form>
-      <div class="popup">
-      <h1>I am popup</h1>
-    </div>
 </template>
 
 <script>
@@ -58,9 +58,12 @@ import Sale from '../components/details/Sale.vue'
 import Seasons from '../components/details/Seasons.vue'
 import Images from '../components/details/Images.vue'
 import Description from '../components/details/Description.vue'
+import ModelDescription from '../components/details/ModelDescription.vue'
+import Material from '../components/details/Material.vue'
+import Care from '../components/details/Care.vue'
 
 export default {
-  components: { Categories, Article, Brands, Sizes, Colors, CreationDate, Prices, Sale, Seasons, Images, Description },
+  components: { Categories, Article, Brands, Sizes, Colors, CreationDate, Prices, Sale, Seasons, Images, Description, ModelDescription, Material, Care },
   props: {
     id: {
       type: Number
@@ -75,6 +78,8 @@ export default {
     const pageNumber = ref(route.params.page)
     const newColors = ref([])
     const newCategory = ref([])
+    const newSizes = ref([])
+    const newBrand = ref(null)
     function resetCategories () {
       goodItem.value.product_categories = null
       console.log('Сброс категорий')
@@ -82,8 +87,20 @@ export default {
     function setNewCategory (val) {
       newCategory.value = val
     }
-    function addNewColor (color) {
-      this.newColors.push(color)
+    function setNewSizes (val) {
+      newSizes.value.push(val)
+    }
+    function delNewSize (val) {
+      newSizes.value.splice(val, 1)
+    }
+    function delNewColor (val) {
+      newColors.value.splice(val, 1)
+    }
+    function setNewBrand (val) {
+      newBrand.value = val
+    }
+    function setNewColors (val) {
+      newColors.value.push(val)
     }
     function resetBrand () {
       goodItem.value.product_brand = null
@@ -117,9 +134,15 @@ export default {
       goodItem,
       deleteCurrentColor,
       newCategory,
+      newSizes,
       setNewCategory,
       resetCategories,
-      addNewColor,
+      setNewSizes,
+      setNewBrand,
+      setNewColors,
+      delNewSize,
+      delNewColor,
+      newBrand,
       colorList,
       categoryList,
       sizeList,
@@ -134,7 +157,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 header{
   display: flex;
   justify-content: space-between;
@@ -156,67 +179,6 @@ header{
   justify-content: space-between;
   .fields{
     width: 400px;
-    .field{
-      margin-bottom: 32px;
-      label{
-        display: block;
-        font-weight: 500;
-        margin-bottom: 10px;
-        color: #6A7797;
-        font-size: 20px;
-      }
-      .color-wrapper{
-        display: flex;
-      }
-      .input{
-        display: block;
-        width: 100%;
-        height: 50px;
-        font-size: 18px;
-        border: 1px solid #6A7797;
-        border-radius: 10px;
-        padding-left: 8px;
-        font-weight: 500;
-        margin-bottom: 8px;
-      }
-      .color-i{
-        margin-bottom: 8px;}
-      textarea{
-        font-family: inherit;
-        width: 500px;
-        height: 170px;
-        padding: 16px;
-        font-weight: 500;
-        font-size: 18px;
-        border-radius: 10px;
-      }
-      select{
-        width: 100%;
-        height: 50px;
-        padding: 0 5px;
-        cursor: pointer;
-        border-radius: 10px;
-      }
-    }
-    .field-sm{
-      display: flex;
-      justify-content: space-between;
-      .field{
-        width: 50%;
-        margin-right: 32px;
-        &:last-child{
-          margin-right: 0;
-        }
-      }
-    }
-    .images{
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      grid-gap: 10px;
-      img{
-        max-width: 200px;
-      }
-    }
   }
   .switches{
     .switch-item{
@@ -229,20 +191,6 @@ header{
         font-size: 20px;
       }
     }
-  }
-}
-.popup{
-  width: 500px;
-  padding: 20px;
-  background: #e5e5e5;
-  position: absolute;
-  top: -20%;
-  left: 50%;
-  margin-right: -50%;
-  transform: translate(-50%, -50%);
-  transition: .5s all;
-  &.active{
-    top: 40%
   }
 }
 </style>
