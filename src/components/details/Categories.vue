@@ -14,7 +14,7 @@
         </div>
         <div class="icons-wrapper">
           <div v-if="newCategory.length > 0" @click="offBlock" class="change-categories"><img src="@/assets/icons/pen-solid.svg">Изменить</div>
-          <div v-if="newCategory.length > 0" class="change-categories"><img src="@/assets/icons/pen-solid.svg">Добавить</div>
+          <div v-if="newCategory.length > 0" @click="$emit('turnAdditionalCategoryBlock')" class="change-categories"><img style="height: 15px;" src="@/assets/icons/plus-blue.svg">Добавить</div>
         </div>
           <div :class="{active: !isActive}" class="categories-list" v-for="(item, id) in category_list" :key="id">
             <div class="step-1">
@@ -32,6 +32,24 @@
               </div>
             </div>
           </div>
+          <div v-if="additionalCatgory">
+            <div :class="{active: !isActive}" class="additional-categories-list" v-for="(item, id) in category_list" :key="id">
+              <div class="step-1">
+                <input id="categoryChoice1" name="add-ategory" :value="item.breadcrumbs" v-if="!item.children" @change="offBlock" @input="$emit('setAdditionalCategory', $event.target._value )" type="radio">
+                <label class="small l1">{{ item.category_caption }}</label>
+              </div>
+              <div style="padding-left:20px" v-for="(sub, id) in item.children" :key="id">
+                <div class="step-2-wrapper">
+                  <input  id="categoryChoice2" name="add-category" :value="sub.breadcrumbs" v-if="!sub.children" @change="offBlock" @input="$emit('setAdditionalCategory', $event.target._value )" type="radio">
+                  <label class="small">{{ sub.category_caption }}</label>
+                </div>
+                <div class="step-3" style="padding-left:20px" v-for="(last, id) in sub.children" :key="id">
+                  <input  id="categoryChoice3" name="addd-category" :value="last.breadcrumbs" v-if="!last.children" @change="offBlock" @input="$emit('setAdditionalCategory', $event.target._value )" type="radio">
+                  <label class="small">{{ last.category_caption }}</label>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </transition>
   </div>
@@ -42,9 +60,10 @@ export default {
   props: {
     categories: Array,
     category_list: Array,
-    newCategory: Array
+    newCategory: Array,
+    additionalCatgory: Array
   },
-  emits: ['reset', 'setNew'],
+  emits: ['reset', 'setNew', 'setAdditionalCategory', 'turnAdditionalCategoryBlock'],
   data () {
     return {
       isActive: true
@@ -65,7 +84,6 @@ export default {
     display: flex;
     align-items: center;
       .category-name{
-        font-weight: 500;
         background: #e5e5e5;
         padding: 10px 15px;
         border-radius: 5px;
@@ -115,6 +133,24 @@ export default {
   font-size: 20px;
 }
 .categories-list{
+  .step-1 {
+    display: flex;
+  }
+  .step-2-wrapper{
+        display: flex;
+  }
+  .step-3{
+        display: flex;
+  }
+  .small{
+  font-size: 16px;
+  cursor: pointer;
+  &.l1{
+    font-weight: bold;
+  }
+}
+}
+.additional-categories-list{
   .step-1 {
     display: flex;
   }

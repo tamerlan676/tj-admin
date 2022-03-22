@@ -10,7 +10,8 @@
     <section class="wrapper">
       <div class="fields">
         <Article :product_name="goodItem.product_name"/>
-        <Categories :categories="goodItem.product_categories" :category_list="categoryList" @reset="resetCategories" @setNew="setNewCategory" :newCategory="newCategory" />
+        <Categories :categories="goodItem.product_categories" :category_list="categoryList" @reset="resetCategories" @setNew="setNewCategory" @turnAdditionalCategoryBlock="turnAdditionalCategoryBlock" :newCategory="newCategory"  />
+        <AdditionalCategory v-if="addCategoryBlock" :category_list="categoryList"  @setAdditionalCategory="setAdditionalCategory" :additionalCategory="additionalCategory" />
         <Brands :brand="goodItem.product_brand" :brand_list="brandList" @resetBrand="resetBrand" @setNewBrand="setNewBrand" :new_brand="newBrand" />
         <Sizes :sizes="goodItem.sizes" :sizeList="sizeList" @resetSizes="resetSizes" @setNewSizes="setNewSizes" :newSizes="newSizes" @delNewSize="delNewSize" />
         <Colors :colors="goodItem.colours" :color_list="colorList" :newColors="newColors" @resetColors="resetColors" @setNewColors="setNewColors" @delNewColor="delNewColor"/>
@@ -61,9 +62,10 @@ import Description from '../components/details/Description.vue'
 import ModelDescription from '../components/details/ModelDescription.vue'
 import Material from '../components/details/Material.vue'
 import Care from '../components/details/Care.vue'
+import AdditionalCategory from '../components/details/AdditionalCategory.vue'
 
 export default {
-  components: { Categories, Article, Brands, Sizes, Colors, CreationDate, Prices, Sale, Seasons, Images, Description, ModelDescription, Material, Care },
+  components: { Categories, Article, Brands, Sizes, Colors, CreationDate, Prices, Sale, Seasons, Images, Description, ModelDescription, Material, Care, AdditionalCategory },
   props: {
     id: {
       type: Number
@@ -78,14 +80,19 @@ export default {
     const pageNumber = ref(route.params.page)
     const newColors = ref([])
     const newCategory = ref([])
+    const additionalCategory = ref([])
     const newSizes = ref([])
     const newBrand = ref(null)
+    const addCategoryBlock = ref(false)
     function resetCategories () {
       goodItem.value.product_categories = null
       console.log('Сброс категорий')
     }
     function setNewCategory (val) {
       newCategory.value = val
+    }
+    function setAdditionalCategory (val) {
+      additionalCategory.value = val
     }
     function setNewSizes (val) {
       newSizes.value.push(val)
@@ -114,6 +121,10 @@ export default {
     function deleteCurrentColor (id) {
       this.newColors.splice(id, 1)
     }
+    function turnAdditionalCategoryBlock () {
+      addCategoryBlock.value = !addCategoryBlock.value
+      console.log(addCategoryBlock.value)
+    }
     // const createdCategories = computed(() => `${mainCategory.value}` + `-${subCategory.value}` + `-${lastCategory.value}`)
     axios.get(`http://192.168.200.32:81/admin/api/v1/products/get/id/${+route.params.id}`).then(response => { goodItem.value = response.data.filter(item => item.product_id === +route.params.id)[0] })
     axios.get('http://192.168.200.32:81/api/gds/category').then(response => { categoryList.value = response.data })
@@ -134,14 +145,18 @@ export default {
       goodItem,
       deleteCurrentColor,
       newCategory,
+      additionalCategory,
+      addCategoryBlock,
       newSizes,
       setNewCategory,
       resetCategories,
+      setAdditionalCategory,
       setNewSizes,
       setNewBrand,
       setNewColors,
       delNewSize,
       delNewColor,
+      turnAdditionalCategoryBlock,
       newBrand,
       colorList,
       categoryList,

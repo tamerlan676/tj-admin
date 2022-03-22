@@ -17,6 +17,7 @@ export default {
 
 <style lang="scss" scoped>
   .description{
+    margin-bottom: 24px;
     label{
         display: block;
         font-weight: 500;
