@@ -1,47 +1,55 @@
 <template>
-  <div class="breadcrumbs">
-    <router-link to="/"> Главная</router-link> / <router-link to="/"> Товары</router-link> / {{ goodItem.product_id }}
-  </div>
-  <header>
-    <h2>{{ goodItem.product_class }}</h2>
-    <button>Сохранить</button>
-  </header>
-  <form>
-    <section class="wrapper">
-      <div class="fields">
-        <Article :product_name="goodItem.product_name"/>
-        <Categories :categories="goodItem.product_categories" :category_list="categoryList" @reset="resetCategories" @setNew="setNewCategory" @turnAdditionalCategoryBlock="turnAdditionalCategoryBlock" :newCategory="newCategory"  />
-        <AdditionalCategory v-if="addCategoryBlock" :category_list="categoryList"  @setAdditionalCategory="setAdditionalCategory" :additionalCategory="additionalCategory" />
-        <Brands :brand="goodItem.product_brand" :brand_list="brandList" @resetBrand="resetBrand" @setNewBrand="setNewBrand" :new_brand="newBrand" />
-        <Sizes :sizes="goodItem.sizes" :sizeList="sizeList" @resetSizes="resetSizes" @setNewSizes="setNewSizes" :newSizes="newSizes" @delNewSize="delNewSize" />
-        <Colors :colors="goodItem.colours" :color_list="colorList" :newColors="newColors" @resetColors="resetColors" @setNewColors="setNewColors" @delNewColor="delNewColor"/>
-        <Material :material="goodItem.material" />
-        <CreationDate :date="goodItem.creation_date" />
-        <Prices :cur_price="goodItem.cur_price" :max_price="goodItem.max_price" />
-        <Sale :sale="goodItem.sale_pct"/>
-        <Seasons :season="goodItem.season"/>
-        <Images :images="goodItem.images_files"/>
-        <Description :description="goodItem.product_descr" />
-        <ModelDescription :modelDescription="goodItem.model_descr" />
-        <Care :care="goodItem.care" />
-        <div v-if="goodItem.stock_rest" class="field-sm">
-          <div class="field">
-            <label for="">Остаток на складе</label>
-            <input class="input"  type="text"  :value="goodItem.stock_rest">
+  <div class="main">
+    <aside>
+      <h1 class="aside-title">TJ Admin</h1>
+      <Navigation />
+    </aside>
+    <section class="content">
+      <div class="breadcrumbs">
+        <router-link to="/"> Главная</router-link> / <router-link to="/"> Товары</router-link> / {{ goodItem.product_id }}
+      </div>
+      <header>
+        <h2>{{ goodItem.product_class }}</h2>
+        <button>Сохранить</button>
+      </header>
+      <form>
+        <section class="wrapper">
+          <div class="fields">
+            <Article :product_name="goodItem.product_name"/>
+            <Categories :categories="goodItem.product_categories" :category_list="categoryList" @reset="resetCategories" @setNew="setNewCategory" @turnAdditionalCategoryBlock="turnAdditionalCategoryBlock" :newCategory="newCategory"  />
+            <AdditionalCategory v-if="addCategoryBlock" :category_list="categoryList"  @setAdditionalCategory="setAdditionalCategory" :additionalCategory="additionalCategory" />
+            <Brands :brand="goodItem.product_brand" :brand_list="brandList" @resetBrand="resetBrand" @setNewBrand="setNewBrand" :new_brand="newBrand" />
+            <Sizes :sizes="goodItem.sizes" :sizeList="sizeList" @resetSizes="resetSizes" @setNewSizes="setNewSizes" :newSizes="newSizes" @delNewSize="delNewSize" />
+            <Colors :colors="goodItem.colours" :color_list="colorList" :newColors="newColors" @resetColors="resetColors" @setNewColors="setNewColors" @delNewColor="delNewColor"/>
+            <Material :material="goodItem.material" />
+            <CreationDate :date="goodItem.creation_date" />
+            <Prices :cur_price="goodItem.cur_price" :max_price="goodItem.max_price" />
+            <Sale :sale="goodItem.sale_pct"/>
+            <Seasons :season="goodItem.season"/>
+            <Images :images="goodItem.images_files"/>
+            <Description :description="goodItem.product_descr" />
+            <ModelDescription :modelDescription="goodItem.model_descr" />
+            <Care :care="goodItem.care" />
+            <div v-if="goodItem.stock_rest" class="field-sm">
+              <div class="field">
+                <label for="">Остаток на складе</label>
+                <input class="input"  type="text"  :value="goodItem.stock_rest">
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="switches">
-        <div class="switch-item">
-          <div class="title">Готов к публикации в ИМ</div>
-          <label class="switch">
-            <input type="checkbox" checked>
-            <span class="slider round"></span>
-          </label>
-        </div>
-      </div>
+          <div class="switches">
+            <div class="switch-item">
+              <div class="title">Готов к публикации в ИМ</div>
+              <label class="switch">
+                <input type="checkbox" checked>
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+        </section>
+      </form>
     </section>
-  </form>
+  </div>
 </template>
 
 <script>
@@ -63,9 +71,10 @@ import ModelDescription from '../components/details/ModelDescription.vue'
 import Material from '../components/details/Material.vue'
 import Care from '../components/details/Care.vue'
 import AdditionalCategory from '../components/details/AdditionalCategory.vue'
+import Navigation from '../components/Navigation.vue'
 
 export default {
-  components: { Categories, Article, Brands, Sizes, Colors, CreationDate, Prices, Sale, Seasons, Images, Description, ModelDescription, Material, Care, AdditionalCategory },
+  components: { Categories, Article, Brands, Sizes, Colors, CreationDate, Prices, Sale, Seasons, Images, Description, ModelDescription, Material, Care, AdditionalCategory, Navigation },
   props: {
     id: {
       type: Number
@@ -84,10 +93,6 @@ export default {
     const newSizes = ref([])
     const newBrand = ref(null)
     const addCategoryBlock = ref(false)
-    function resetCategories () {
-      goodItem.value.product_categories = null
-      console.log('Сброс категорий')
-    }
     function setNewCategory (val) {
       newCategory.value = val
     }
@@ -149,7 +154,6 @@ export default {
       addCategoryBlock,
       newSizes,
       setNewCategory,
-      resetCategories,
       setAdditionalCategory,
       setNewSizes,
       setNewBrand,
